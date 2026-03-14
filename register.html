@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChoiceDraft - Register</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://kit.fontawesome.com/ef9baa832e.js" crossorigin="anonymous"></script>
+</head>
+<body class="auth-body">
+
+  <div class="auth-layout split-layout">
+    
+    <!-- Dynamic Header -->
+    <header class="auth-header">
+      <div id="headerLogo" class="auth-header-logo"></div>
+      <p class="auth-header-title">ChoiceDraft</p>
+    </header>
+
+    <!-- Centered Auth Card -->
+    <div class="auth-card-container">
+      <div class="auth-card">
+        <div class="auth-content">
+          <h2 class="auth-title">Create Account</h2>
+          <p class="auth-subtitle">Sign up to get started</p>
+
+          <form id="registerForm" class="auth-form">
+            <div id="errorBox" class="auth-error-box">
+              <i class="fa-solid fa-circle-exclamation auth-error-icon"></i>
+              <p id="errorText" class="auth-error-text"></p>
+            </div>
+
+            <div class="input-group">
+              <label class="input-label">Full Name</label>
+              <input type="text" id="name" class="input-field" placeholder="John Doe" required>
+            </div>
+
+            <div class="input-group">
+              <label class="input-label">Email Address</label>
+              <input type="email" id="email" class="input-field" placeholder="you@example.com" required>
+            </div>
+
+            <div class="input-group">
+              <label class="input-label">Password</label>
+              <div class="password-input-wrapper">
+                <input type="password" id="password" class="input-field password-input" placeholder="••••••••" required>
+                <button type="button" id="togglePwBtn" class="auth-toggle-btn" title="Toggle Password">
+                  <i class="fa-solid fa-eye" id="pwIcon"></i>
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn-primary mt-2">
+              Register
+            </button>
+          </form>
+
+          <div class="divider-container">
+            <div class="divider-line"></div>
+            <p class="divider-text">or</p>
+            <div class="divider-line"></div>
+          </div>
+
+          <p class="text-center auth-footer-text">
+            Already have an account? <a href="signin.html" class="text-primary font-bold underline">Sign In</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { icons, dataService, navigateTo } from './app.js';
+    
+    document.getElementById('headerLogo').innerHTML = icons.logo;
+
+    const form = document.getElementById('registerForm');
+    const pwInput = document.getElementById('password');
+    const toggleBtn = document.getElementById('togglePwBtn');
+    const pwIcon = document.getElementById('pwIcon');
+    const submitBtn = document.getElementById('submitBtn');
+    const errorBox = document.getElementById('errorBox');
+    const errorText = document.getElementById('errorText');
+
+    // Toggle Password Visibility
+    toggleBtn.addEventListener('click', () => {
+      const type = pwInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      pwInput.setAttribute('type', type);
+      pwIcon.className = type === 'password' ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+    });
+
+    // Handle Submit
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      errorBox.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Registering...';
+
+      const nameInput = document.getElementById('name');
+      const emailInput = document.getElementById('email');
+      
+      const res = await dataService.register(nameInput.value, emailInput.value, pwInput.value);
+
+      if (res.success) {
+        localStorage.setItem('choicedraft_onboarding_seen', 'true');
+        navigateTo('home.html');
+      } else {
+        errorText.textContent = res.error;
+        errorBox.style.display = 'flex';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Register';
+      }
+    });
+
+  </script>
+</body>
+</html>

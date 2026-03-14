@@ -1,0 +1,26 @@
+[
+  {
+    "id": "user_1",
+    "name": "Alex Educator",
+    "email": "alex@example.com",
+    "password": "password123",
+    "role": "Teacher",
+    "institution": "Springfield High"
+  },
+  {
+    "id": "user_2",
+    "name": "Maria Santos",
+    "email": "maria@example.com",
+    "password": "password123",
+    "role": "Student",
+    "institution": "ChoiceDraft Academy"
+  },
+  {
+    "id": "user_3",
+    "name": "Jose Reyes",
+    "email": "jose@example.com",
+    "password": "password123",
+    "role": "Contributor",
+    "institution": "Manila Tech"
+  }
+]

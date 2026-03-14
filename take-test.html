@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taking Test - ChoiceDraft</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zain:wght@200;300;400;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="take-test-layout scroll-smooth">
+
+  <!-- Header / Progress Area -->
+  <header class="test-progress-container sticky top-0 z-50">
+    <div class="flex items-center justify-between mb-2">
+      <div class="flex items-center gap-2">
+        <button id="quitBtn" class="topbar-icon-btn text-a9a9a9" title="Quit Test">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <h1 id="pageTitle" class="topbar-title">Loading...</h1>
+      </div>
+      <div id="timerDisplay" class="test-timer hidden">
+        <i class="fa-solid fa-clock"></i>
+        <span id="timerText">00:00</span>
+      </div>
+    </div>
+    <div class="test-progress-bar">
+      <div id="progressFill" class="test-progress-fill"></div>
+    </div>
+  </header>
+
+  <!-- Question Area -->
+  <main id="questionArea" class="test-question-area fade-in">
+    <!-- State Container -->
+    <div id="stateContainer" class="p-8 text-center">
+      <p class="text-a9a9a9">Preparing your test...</p>
+    </div>
+
+    <!-- Question Content (Rendered by JS) -->
+    <div id="questionContent" class="hidden">
+      <div class="test-question-header">
+        <span id="questionIndex" class="pool-q-index">1</span>
+        <span id="questionPoints" class="pool-q-points">10 pts</span>
+      </div>
+      
+      <h2 id="questionText" class="pool-q-text mb-8">
+        Question text goes here?
+      </h2>
+
+      <div id="choicesContainer" class="flex flex-col gap-3">
+        <!-- Choices rendered by JS -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Navigation -->
+  <footer class="test-footer sticky bottom-0 z-50">
+    <button id="prevBtn" class="btn-secondary flex-1 rounded-full hidden">
+      <i class="fa-solid fa-chevron-left mr-2"></i> Previous
+    </button>
+    <button id="nextBtn" class="btn-primary flex-1 rounded-full">
+      Next <i class="fa-solid fa-chevron-right ml-2"></i>
+    </button>
+  </footer>
+
+  <!-- Quit Confirmation Modal -->
+  <div id="quitModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <h2 class="modal-title">Quit Test?</h2>
+      <p class="modal-text">Your progress will not be saved. Are you sure you want to stop now?</p>
+      <div class="flex gap-3 mt-8">
+        <button id="cancelQuitBtn" class="btn-outline flex-1">Resume</button>
+        <button id="confirmQuitBtn" class="btn-danger flex-1">Quit</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { dataService, navigateTo } from './app.js';
+
+    const params = new URLSearchParams(window.location.search);
+    const testId = params.get('id');
+
+    // DOM Elements
+    const pageTitle = document.getElementById('pageTitle');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const timerText = document.getElementById('timerText');
+    const progressFill = document.getElementById('progressFill');
+    const stateContainer = document.getElementById('stateContainer');
+    const questionContent = document.getElementById('questionContent');
+    const questionIndexEl = document.getElementById('questionIndex');
+    const questionPointsEl = document.getElementById('questionPoints');
+    const questionTextEl = document.getElementById('questionText');
+    const choicesContainer = document.getElementById('choicesContainer');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const quitBtn = document.getElementById('quitBtn');
+    const quitModal = document.getElementById('quitModal');
+    const cancelQuitBtn = document.getElementById('cancelQuitBtn');
+    const confirmQuitBtn = document.getElementById('confirmQuitBtn');
+
+    // State
+    let test = null;
+    let questions = [];
+    let currentIdx = 0;
+    let answers = {}; // QID -> ChoiceID
+    let timeRemaining = 0;
+    let timerInterval = null;
+
+    async function init() {
+      if (!testId) {
+        stateContainer.innerHTML = '<p class="text-a9a9a9">No test selected.</p>';
+        return;
+      }
+
+      test = await dataService.getTestById(testId);
+      if (!test || !test.questions || test.questions.length === 0) {
+        stateContainer.innerHTML = '<p class="text-a9a9a9">This test has no questions.</p>';
+        return;
+      }
+
+      pageTitle.textContent = test.title;
+      questions = [...test.questions];
+
+      // Handle Shuffling if set
+      if (test.settings?.shuffleQuestions) {
+        questions.sort(() => Math.random() - 0.5);
+      }
+
+      // Handle Shuffling Choices per question
+      if (test.settings?.shuffleChoices) {
+        questions.forEach(q => {
+          if (q.choices) q.choices.sort(() => Math.random() - 0.5);
+        });
+      }
+
+      // Timer Setup
+      if (test.settings?.timeLimit) {
+        timeRemaining = test.settings.timeLimit * 60;
+        timerDisplay.classList.remove('hidden');
+        startTimer();
+      }
+
+      stateContainer.classList.add('hidden');
+      questionContent.classList.remove('hidden');
+      renderQuestion();
+    }
+
+    function startTimer() {
+      updateTimerUI();
+      timerInterval = setInterval(() => {
+        timeRemaining--;
+        updateTimerUI();
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          finishTest();
+        }
+      }, 1000);
+    }
+
+    function updateTimerUI() {
+      const minutes = Math.floor(timeRemaining / 60);
+      const seconds = timeRemaining % 60;
+      timerText.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      if (timeRemaining < 60) {
+        timerDisplay.classList.add('urgent');
+      }
+    }
+
+    function renderQuestion() {
+      const q = questions[currentIdx];
+      questionIndexEl.textContent = currentIdx + 1;
+      questionPointsEl.textContent = `${q.points || 10} pts`;
+      questionTextEl.textContent = q.text;
+      
+      // Formatting
+      questionTextEl.className = 'pool-q-text mb-8';
+      if (q.bold) questionTextEl.classList.add('font-bold');
+      if (q.italic) questionTextEl.classList.add('italic');
+      if (q.underline) questionTextEl.classList.add('underline');
+
+      choicesContainer.innerHTML = q.choices.map((c, idx) => {
+        const letter = String.fromCharCode(65 + idx);
+        const isSelected = answers[q.id] === c.id;
+        return `
+          <button class="choice-selection-btn ${isSelected ? 'selected' : ''}" data-id="${c.id}">
+            <div class="choice-letter">${letter}</div>
+            <div class="flex-1">${c.text}</div>
+          </button>
+        `;
+      }).join('');
+
+      // Add click listeners to choices
+      document.querySelectorAll('.choice-selection-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const choiceId = btn.dataset.id;
+          answers[q.id] = choiceId;
+          // UI Update
+          document.querySelectorAll('.choice-selection-btn').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+        });
+      });
+
+      // Update Navigation
+      prevBtn.classList.toggle('hidden', currentIdx === 0);
+      if (currentIdx === questions.length - 1) {
+        nextBtn.innerHTML = 'Finish Test <i class="fa-solid fa-flag-checkered ml-2"></i>';
+      } else {
+        nextBtn.innerHTML = 'Next <i class="fa-solid fa-chevron-right ml-2"></i>';
+      }
+
+      // Progress Bar
+      const progress = ((currentIdx + 1) / questions.length) * 100;
+      progressFill.style.width = `${progress}%`;
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (currentIdx < questions.length - 1) {
+        currentIdx++;
+        renderQuestion();
+        window.scrollTo(0, 0);
+      } else {
+        finishTest();
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentIdx > 0) {
+        currentIdx--;
+        renderQuestion();
+        window.scrollTo(0, 0);
+      }
+    });
+
+    // Quit Modal
+    quitBtn.addEventListener('click', () => {
+      quitModal.classList.remove('hidden');
+    });
+    cancelQuitBtn.addEventListener('click', () => {
+      quitModal.classList.add('hidden');
+    });
+    confirmQuitBtn.addEventListener('click', () => {
+      navigateTo(`test-details.html?id=${testId}`);
+    });
+
+    async function finishTest() {
+      if (timerInterval) clearInterval(timerInterval);
+      
+      // Save attempt to dataService
+      const user = await dataService.getCurrentUser();
+      
+      // Compute Score
+      let score = 0;
+      let totalPoints = 0;
+      const review = questions.map(q => {
+        const isCorrect = answers[q.id] === q.correctChoiceId;
+        totalPoints += (q.points || 10);
+        if (isCorrect) score += (q.points || 10);
+        return {
+          questionId: q.id,
+          userChoiceId: answers[q.id],
+          isCorrect
+        };
+      });
+
+      const percentage = Math.round((score / totalPoints) * 100);
+
+      // Record in session temporary storage for Results page
+      sessionStorage.setItem('choicedraft_last_result', JSON.stringify({
+        testId: test.id,
+        testTitle: test.title,
+        score,
+        totalPoints,
+        percentage,
+        review,
+        timestamp: new Date().toISOString()
+      }));
+
+      // Also record in dataService if logged in
+      if (user) {
+        const attempt = {
+          userId: user.id,
+          percentage,
+          score,
+          totalPoints,
+          timestamp: new Date().toISOString()
+        };
+        // We'll update the test model with this attempt
+        const updatedAttempts = [...(test.attempts || []), attempt];
+        await dataService.updateTest(test.id, { attempts: updatedAttempts });
+      }
+
+      navigateTo(`results.html`);
+    }
+
+    init();
+  </script>
+</body>
+</html>
