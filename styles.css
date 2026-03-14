@@ -668,7 +668,16 @@ body.auth-body {
 .profile-edit-btn { width: 100%; border-radius: 50px; margin-top: 16px; font-size: 18px; }
 .password-input-wrapper { position: relative; }
 
-/* Onboarding Styles */
+/* Onboarding Layout */
+.onboarding-layout {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--white);
+  overflow-y: auto;
+}
 
 .onboarding-skip-btn {
   position: absolute;
@@ -690,6 +699,9 @@ body.auth-body {
   display: flex;
   flex-direction: column;
   padding: 60px 36px 0;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .onboarding-title {
