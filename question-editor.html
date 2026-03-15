@@ -237,7 +237,8 @@
       goBack();
     });
 
-    logoutBtn.addEventListener('click', () => {
+    logoutBtn.addEventListener('click', async () => {
+      await dataService.logout();
       navigateTo('signin.html');
     });
 

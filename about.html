@@ -209,7 +209,7 @@
   </div>
 
   <script type="module">
-    import { dataService } from './app.js';
+    import { dataService, navigateTo } from './app.js';
 
     const sidebar = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -241,6 +241,8 @@
       await dataService.logout();
       navigateTo('signin.html');
     });
+
+
 
     async function init() {
       const user = await dataService.getCurrentUser();

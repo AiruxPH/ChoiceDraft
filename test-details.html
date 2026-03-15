@@ -171,7 +171,10 @@
     menuToggleBtn.addEventListener('click', () => toggleSidebar(true));
     closeMenuBtn.addEventListener('click', () => toggleSidebar(false));
     sidebarOverlay.addEventListener('click', () => toggleSidebar(false));
-    logoutBtn.addEventListener('click', () => navigateTo('signin.html'));
+    logoutBtn.addEventListener('click', async () => {
+      await dataService.logout();
+      navigateTo('signin.html');
+    });
 
     // Data Loading & Rendering
     const params = new URLSearchParams(window.location.search);
