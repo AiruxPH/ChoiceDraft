@@ -1,0 +1,1 @@
+This is the static version of the website. It is not a React application. It is a static HTML website that can be run locally.
