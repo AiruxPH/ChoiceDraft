@@ -1,1 +1,0 @@
-// Font Awesome kit is now loaded directly in HTML to avoid syntax errors.

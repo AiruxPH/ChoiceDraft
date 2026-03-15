@@ -1,4 +1,7 @@
 // Shared application logic
+import { dataStore } from './js/data.js';
+import { testService } from './js/tests.js';
+import { authService } from './js/auth.js';
 
 // Handle generic page transitions
 export function navigateTo(url) {
@@ -6,201 +9,30 @@ export function navigateTo(url) {
 }
 
 // --- Data Persistence Service ---
-// Handles loading from data.json and saving to localStorage for live demo experience
-
-const STORAGE_KEY = 'choicedraft_data';
-
-// Embedded fallback data – used when fetch() is unavailable (e.g., file:// protocol)
-const DEFAULT_USERS = [
-  { id: 'user_1', name: 'Alex Educator', email: 'alex@example.com', password: 'password123', role: 'Teacher', institution: 'Springfield High' },
-  { id: 'user_2', name: 'Maria Santos', email: 'maria@example.com', password: 'password123', role: 'Student', institution: 'ChoiceDraft Academy' },
-  { id: 'user_3', name: 'Jose Reyes', email: 'jose@example.com', password: 'password123', role: 'Contributor', institution: 'Manila Tech' }
-];
-
+// Reconstructing dataService to keep HTML files exactly the same!
 export const dataService = {
-  data: null,
+  // Re-map internal data
+  get data() { return dataStore.data; },
+  set data(val) { dataStore.data = val; },
+  
+  // Re-map init and save
+  init: () => dataStore.init(),
+  save: () => dataStore.save(),
 
-  async init() {
-    // 1. Try to load from localStorage first
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      this.data = JSON.parse(stored);
-      if (!this.data.users) this.data.users = DEFAULT_USERS;
-      return this.data;
-    }
+  // Re-map test functions
+  getTests: () => testService.getTests(),
+  getTestById: (id) => testService.getTestById(id),
+  createTest: (testData) => testService.createTest(testData, authService.getCurrentUser),
+  updateTest: (id, updates) => testService.updateTest(id, updates),
+  addQuestion: (testId, question) => testService.addQuestion(testId, question),
+  updateQuestion: (testId, qid, updates) => testService.updateQuestion(testId, qid, updates),
+  deleteQuestion: (testId, qid) => testService.deleteQuestion(testId, qid),
 
-    // 2. Try fetching from JSON files (works on a local server)
-    try {
-      const [dataRes, usersRes] = await Promise.all([
-        fetch('./data.json'),
-        fetch('./users.json')
-      ]);
-
-      if (dataRes.ok) {
-        this.data = await dataRes.json();
-        this.data.users = usersRes.ok ? await usersRes.json() : DEFAULT_USERS;
-        this.save();
-        return this.data;
-      }
-    } catch (e) {
-      // fetch() failed (e.g., file:// protocol) — fall through to embedded data
-      console.warn('fetch() failed, using embedded fallback data.', e.message);
-    }
-
-    // 3. Fallback: use embedded data directly (guarantees file:// compatibility)
-    this.data = {
-      tests: [],
-      users: DEFAULT_USERS,
-      currentUser: null
-    };
-    this.save();
-    return this.data;
-  },
-
-  save() {
-    if (this.data) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data));
-    }
-  },
-
-  async getTests() {
-    if (!this.data) await this.init();
-    return this.data ? this.data.tests : [];
-  },
-
-  async getTestById(id) {
-    const tests = await this.getTests();
-    return tests.find(t => t.id === id);
-  },
-
-  async createTest(testData) {
-    if (!this.data) await this.init();
-    const user = await this.getCurrentUser();
-    
-    const newTest = {
-      id: 'test_' + Math.random().toString(36).substr(2, 9),
-      ownerId: user ? user.id : 'guest',
-      title: 'Untitled Test',
-      description: '',
-      status: 'Draft',
-      questions: [],
-      settings: {
-        timeLimit: null,
-        shuffleQuestions: false,
-        shuffleChoices: false
-      },
-      collaborators: [],
-      attempts: [],
-      createdAt: new Date().toISOString(),
-      ...testData
-    };
-
-    this.data.tests.unshift(newTest); // Add to beginning
-    this.save();
-    return newTest;
-  },
-
-  async updateTest(id, updates) {
-    if (!this.data) await this.init();
-    const index = this.data.tests.findIndex(t => t.id === id);
-    if (index !== -1) {
-      this.data.tests[index] = { ...this.data.tests[index], ...updates };
-      // Deep merge settings if provided
-      if (updates.settings) {
-        this.data.tests[index].settings = { ...this.data.tests[index].settings, ...updates.settings };
-      }
-      this.save();
-      return true;
-    }
-    return false;
-  },
-
-  async addQuestion(testId, question) {
-    if (!this.data) await this.init();
-    const test = this.data.tests.find(t => t.id === testId);
-    if (test) {
-      const newQuestion = {
-        id: Math.random().toString(36).substr(2, 9),
-        ...question
-      };
-      test.questions.push(newQuestion);
-      this.save();
-      return newQuestion;
-    }
-    return null;
-  },
-
-  async updateQuestion(testId, qid, updates) {
-    if (!this.data) await this.init();
-    const test = this.data.tests.find(t => t.id === testId);
-    if (test) {
-      const qIndex = test.questions.findIndex(q => q.id === qid);
-      if (qIndex !== -1) {
-        test.questions[qIndex] = { ...test.questions[qIndex], ...updates };
-        this.save();
-        return true;
-      }
-    }
-    return false;
-  },
-
-  async deleteQuestion(testId, qid) {
-    if (!this.data) await this.init();
-    const test = this.data.tests.find(t => t.id === testId);
-    if (test) {
-      test.questions = test.questions.filter(q => q.id !== qid);
-      this.save();
-      return true;
-    }
-    return false;
-  },
-
-  async getCurrentUser() {
-    if (!this.data) await this.init();
-    return this.data ? this.data.currentUser : null;
-  },
-
-  async login(email, password) {
-    if (!this.data) await this.init();
-    const user = this.data.users.find(u => u.email === email && u.password === password);
-    if (user) {
-      // Don't store password in currentUser session object
-      const { password, ...sessionUser } = user;
-      this.data.currentUser = sessionUser;
-      this.save();
-      return { success: true, user: sessionUser };
-    }
-    return { success: false, error: "Invalid email or password" };
-  },
-
-  async register(name, email, password) {
-    if (!this.data) await this.init();
-    if (this.data.users.some(u => u.email === email)) {
-      return { success: false, error: "Email already registered" };
-    }
-
-    const newUser = {
-      id: 'user_' + Math.random().toString(36).substr(2, 9),
-      name,
-      email,
-      password,
-      role: 'Teacher',
-      institution: 'ChoiceDraft User'
-    };
-
-    this.data.users.push(newUser);
-    const { password: pw, ...sessionUser } = newUser;
-    this.data.currentUser = sessionUser;
-    this.save();
-    return { success: true, user: sessionUser };
-  },
-
-  async logout() {
-    if (!this.data) await this.init();
-    this.data.currentUser = null;
-    this.save();
-    return true;
-  }
+  // Re-map auth functions
+  getCurrentUser: () => authService.getCurrentUser(),
+  login: (email, password) => authService.login(email, password),
+  register: (name, email, password) => authService.register(name, email, password),
+  logout: () => authService.logout()
 };
 
 export const icons = {
