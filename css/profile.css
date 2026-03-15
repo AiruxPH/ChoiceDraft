@@ -1,0 +1,7 @@
+
+@media (min-width: 769px) {
+/* Profile Edit */
+.profile-edit-btn { width: 100%; border-radius: 50px; margin-top: 16px; font-size: 18px; }
+.password-input-wrapper { position: relative; }
+
+}

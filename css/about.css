@@ -1,0 +1,23 @@
+
+@media (min-width: 769px) {
+  /* --- About Page --- */
+  .about-hero-title {
+    font-size: 28px;
+  }
+  .about-hero-subtitle {
+    font-size: 14px;
+  }
+  .about-card-title {
+    font-size: 15px;
+  }
+  .about-card-text {
+    font-size: 13px;
+  }
+  .about-feature-name {
+    font-size: 13px;
+  }
+  .about-feature-desc {
+    font-size: 12px;
+  }
+
+}
