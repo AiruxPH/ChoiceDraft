@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
   <div class="home-layout">
     <!-- Sidebar Overlay -->
@@ -27,7 +29,7 @@
               fill="white" fill-rule="evenodd" />
           </svg>
         </div>
-        <span class="auth-header-title sidebar-logo-text">ChoiceDraft</span>
+        <span class="auth-header-title sidebar-logo-text">Choice<span class="text-secondary">Draft</span></span>
         <button class="close-menu sidebar-close-btn" id="closeMenuBtn" title="Close Menu" aria-label="Close Menu">
           <i class="fa-solid fa-times"></i>
         </button>
@@ -41,7 +43,7 @@
           <p class="user-email" id="userEmail">user@example.com</p>
         </div>
       </div>
-      
+
       <nav class="sidebar-nav">
         <a href="home.html" class="nav-item">
           <div class="nav-icon"><i class="fa-solid fa-chalkboard"></i></div>
@@ -78,7 +80,8 @@
           <span class="topbar-title">About</span>
         </div>
         <div class="flex items-center gap-1">
-          <a href="home.html" class="topbar-icon-btn flex items-center justify-center" title="Go to Dashboard" aria-label="Go to Dashboard">
+          <a href="home.html" class="topbar-icon-btn flex items-center justify-center" title="Go to Dashboard"
+            aria-label="Go to Dashboard">
             <i class="fa-solid fa-table-cells-large topbar-home-icon"></i>
           </a>
         </div>
@@ -106,100 +109,102 @@
           <div class="about-hero-version">Version 1.0.0</div>
         </div>
 
-      <div class="about-section-container">
-        <!-- Mission -->
-        <div class="about-card">
-          <h3 class="about-card-title">Our Mission</h3>
-          <p class="about-card-text">
-            ChoiceDraft empowers educators and content creators to build, manage, and share high-quality multiple-choice tests with ease. From single quizzes to comprehensive test series, we've got you covered.
-          </p>
-        </div>
+        <div class="about-section-container">
+          <!-- Mission -->
+          <div class="about-card">
+            <h3 class="about-card-title">Our Mission</h3>
+            <p class="about-card-text">
+              ChoiceDraft empowers educators and content creators to build, manage, and share high-quality
+              multiple-choice tests with ease. From single quizzes to comprehensive test series, we've got you covered.
+            </p>
+          </div>
 
-        <!-- Features -->
-        <div>
-          <h3 class="about-card-title">Features</h3>
-          <div class="about-feature-grid">
-            <div class="about-feature-item">
-              <div class="about-feature-icon"><i class="fa-solid fa-users"></i></div>
-              <div>
-                <p class="about-feature-name">User Management</p>
-                <p class="about-feature-desc">Create and manage accounts for test makers and takers.</p>
+          <!-- Features -->
+          <div>
+            <h3 class="about-card-title">Features</h3>
+            <div class="about-feature-grid">
+              <div class="about-feature-item">
+                <div class="about-feature-icon"><i class="fa-solid fa-users"></i></div>
+                <div>
+                  <p class="about-feature-name">User Management</p>
+                  <p class="about-feature-desc">Create and manage accounts for test makers and takers.</p>
+                </div>
               </div>
-            </div>
-            <div class="about-feature-item">
-              <div class="about-feature-icon"><i class="fa-solid fa-file-lines"></i></div>
-              <div>
-                <p class="about-feature-name">Test Management</p>
-                <p class="about-feature-desc">Create, edit, and organize multiple tests in one place.</p>
+              <div class="about-feature-item">
+                <div class="about-feature-icon"><i class="fa-solid fa-file-lines"></i></div>
+                <div>
+                  <p class="about-feature-name">Test Management</p>
+                  <p class="about-feature-desc">Create, edit, and organize multiple tests in one place.</p>
+                </div>
               </div>
-            </div>
-            <div class="about-feature-item">
-              <div class="about-feature-icon"><i class="fa-solid fa-shuffle"></i></div>
-              <div>
-                <p class="about-feature-name">Question Pool</p>
-                <p class="about-feature-desc">Build a pool of questions and shuffle them for each student.</p>
+              <div class="about-feature-item">
+                <div class="about-feature-icon"><i class="fa-solid fa-shuffle"></i></div>
+                <div>
+                  <p class="about-feature-name">Question Pool</p>
+                  <p class="about-feature-desc">Build a pool of questions and shuffle them for each student.</p>
+                </div>
               </div>
-            </div>
-            <div class="about-feature-item">
-              <div class="about-feature-icon"><i class="fa-solid fa-chart-simple"></i></div>
-              <div>
-                <p class="about-feature-name">Smart Scoring</p>
-                <p class="about-feature-desc">Automatic grading with detailed score breakdown.</p>
+              <div class="about-feature-item">
+                <div class="about-feature-icon"><i class="fa-solid fa-chart-simple"></i></div>
+                <div>
+                  <p class="about-feature-name">Smart Scoring</p>
+                  <p class="about-feature-desc">Automatic grading with detailed score breakdown.</p>
+                </div>
               </div>
-            </div>
-            <div class="about-feature-item">
-              <div class="about-feature-icon"><i class="fa-solid fa-file-lines"></i></div>
-              <div>
-                <p class="about-feature-name">Report System</p>
-                <p class="about-feature-desc">Comprehensive performance reports for test series.</p>
+              <div class="about-feature-item">
+                <div class="about-feature-icon"><i class="fa-solid fa-file-lines"></i></div>
+                <div>
+                  <p class="about-feature-name">Report System</p>
+                  <p class="about-feature-desc">Comprehensive performance reports for test series.</p>
+                </div>
               </div>
-            </div>
-            <div class="about-feature-item">
-              <div class="about-feature-icon"><i class="fa-solid fa-file-lines"></i></div>
-              <div>
-                <p class="about-feature-name">Text Formatting</p>
-                <p class="about-feature-desc">Apply bold, italic, and underline formatting to questions.</p>
+              <div class="about-feature-item">
+                <div class="about-feature-icon"><i class="fa-solid fa-file-lines"></i></div>
+                <div>
+                  <p class="about-feature-name">Text Formatting</p>
+                  <p class="about-feature-desc">Apply bold, italic, and underline formatting to questions.</p>
+                </div>
               </div>
-            </div>
-            <div class="about-feature-item">
-              <div class="about-feature-icon"><i class="fa-solid fa-key"></i></div>
-              <div>
-                <p class="about-feature-name">Answer Key</p>
-                <p class="about-feature-desc">Review correct answers with explanations.</p>
+              <div class="about-feature-item">
+                <div class="about-feature-icon"><i class="fa-solid fa-key"></i></div>
+                <div>
+                  <p class="about-feature-name">Answer Key</p>
+                  <p class="about-feature-desc">Review correct answers with explanations.</p>
+                </div>
               </div>
-            </div>
-            <div class="about-feature-item">
-              <div class="about-feature-icon"><i class="fa-solid fa-file-lines"></i></div>
-              <div>
-                <p class="about-feature-name">Test Builder</p>
-                <p class="about-feature-desc">Manage test structure, settings, and time limits.</p>
+              <div class="about-feature-item">
+                <div class="about-feature-icon"><i class="fa-solid fa-file-lines"></i></div>
+                <div>
+                  <p class="about-feature-name">Test Builder</p>
+                  <p class="about-feature-desc">Manage test structure, settings, and time limits.</p>
+                </div>
               </div>
-            </div>
-            <div class="about-feature-item">
-              <div class="about-feature-icon"><i class="fa-solid fa-comment-dots"></i></div>
-              <div>
-                <p class="about-feature-name">Feedback System</p>
-                <p class="about-feature-desc">Give personalized feedback to each test taker.</p>
+              <div class="about-feature-item">
+                <div class="about-feature-icon"><i class="fa-solid fa-comment-dots"></i></div>
+                <div>
+                  <p class="about-feature-name">Feedback System</p>
+                  <p class="about-feature-desc">Give personalized feedback to each test taker.</p>
+                </div>
               </div>
-            </div>
-            <div class="about-feature-item">
-              <div class="about-feature-icon"><i class="fa-solid fa-users"></i></div>
-              <div>
-                <p class="about-feature-name">Collaboration</p>
-                <p class="about-feature-desc">Invite colleagues to co-create tests as editors or viewers.</p>
+              <div class="about-feature-item">
+                <div class="about-feature-icon"><i class="fa-solid fa-users"></i></div>
+                <div>
+                  <p class="about-feature-name">Collaboration</p>
+                  <p class="about-feature-desc">Invite colleagues to co-create tests as editors or viewers.</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Privacy note -->
-        <div class="about-privacy-banner">
-          <i class="fa-solid fa-shield-halved about-privacy-icon"></i>
-          <p class="about-privacy-text">
-            ChoiceDraft stores all data locally in your browser. This is a demonstration app and is not intended for collecting personal or sensitive information.
-          </p>
+          <!-- Privacy note -->
+          <div class="about-privacy-banner">
+            <i class="fa-solid fa-shield-halved about-privacy-icon"></i>
+            <p class="about-privacy-text">
+              ChoiceDraft stores all data locally in your browser. This is a demonstration app and is not intended for
+              collecting personal or sensitive information.
+            </p>
+          </div>
         </div>
-      </div>
     </main>
   </div>
 
@@ -250,4 +255,5 @@
     init();
   </script>
 </body>
+
 </html>

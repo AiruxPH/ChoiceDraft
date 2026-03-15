@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body class="bg-app">
   <div class="home-layout">
     <!-- Sidebar Overlay -->
@@ -22,7 +24,7 @@
               fill="white" fill-rule="evenodd" />
           </svg>
         </div>
-        <span class="auth-header-title sidebar-logo-text">ChoiceDraft</span>
+        <span class="auth-header-title sidebar-logo-text">Choice<span class="text-secondary">Draft</span></span>
         <button class="close-menu sidebar-close-btn" id="closeMenuBtn" title="Close Menu" aria-label="Close Menu">
           <i class="fa-solid fa-times"></i>
         </button>
@@ -36,7 +38,7 @@
           <p class="user-email" id="userEmail">user@example.com</p>
         </div>
       </div>
-      
+
       <nav class="sidebar-nav">
         <a href="home.html" class="nav-item">
           <div class="nav-icon"><i class="fa-solid fa-chalkboard"></i></div>
@@ -73,7 +75,8 @@
           <span class="topbar-title">My Profile</span>
         </div>
         <div class="flex items-center gap-1">
-          <a href="home.html" class="topbar-icon-btn flex items-center justify-center" title="Dashboard" aria-label="Dashboard">
+          <a href="home.html" class="topbar-icon-btn flex items-center justify-center" title="Dashboard"
+            aria-label="Dashboard">
             <i class="fa-solid fa-table-cells-large topbar-home-icon"></i>
           </a>
         </div>
@@ -133,7 +136,8 @@
                 <input type="text" id="editInstitution" class="input-field" placeholder="Your school or institution">
               </div>
               <div class="input-group">
-                <label class="input-label">New Password <span class="text-light" style="font-size:13px;">(leave blank to keep current)</span></label>
+                <label class="input-label">New Password <span class="text-light" style="font-size:13px;">(leave blank to
+                    keep current)</span></label>
                 <div class="password-input-wrapper">
                   <input type="password" id="editPassword" class="input-field password-input" placeholder="••••••••">
                   <button type="button" id="toggleEditPw" class="auth-toggle-btn">
@@ -298,4 +302,5 @@
     init();
   </script>
 </body>
+
 </html>

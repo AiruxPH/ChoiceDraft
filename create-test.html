@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body class="bg-app">
   <div class="home-layout">
     <!-- Sidebar Overlay -->
@@ -22,7 +24,7 @@
               fill="white" fill-rule="evenodd" />
           </svg>
         </div>
-        <span class="auth-header-title sidebar-logo-text">ChoiceDraft</span>
+        <span class="auth-header-title sidebar-logo-text">Choice<span class="text-secondary">Draft</span></span>
         <button class="close-menu sidebar-close-btn" id="closeMenuBtn" title="Close Menu" aria-label="Close Menu">
           <i class="fa-solid fa-times"></i>
         </button>
@@ -36,7 +38,7 @@
           <p class="user-email" id="userEmail">user@example.com</p>
         </div>
       </div>
-      
+
       <nav class="sidebar-nav">
         <a href="home.html" class="nav-item">
           <div class="nav-icon"><i class="fa-solid fa-chalkboard"></i></div>
@@ -91,7 +93,8 @@
             </div>
             <div class="input-group">
               <label class="input-label">Description (Optional)</label>
-              <input type="text" id="testDescription" class="input-field" placeholder="A short description of this test.">
+              <input type="text" id="testDescription" class="input-field"
+                placeholder="A short description of this test.">
             </div>
             <div class="flex items-center gap-4 mt-6">
               <button id="saveDraftBtn" class="btn-primary flex-1">Save & Proceed to Questions</button>
@@ -105,7 +108,7 @@
 
   <script type="module">
     import { navigateTo, dataService } from './app.js';
-    
+
     const sidebar = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
     const menuToggleBtn = document.getElementById('menuToggleBtn');
@@ -179,4 +182,5 @@
     init();
   </script>
 </body>
+
 </html>

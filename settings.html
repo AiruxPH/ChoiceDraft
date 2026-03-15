@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body class="bg-app">
   <div class="home-layout">
     <!-- Sidebar Overlay -->
@@ -22,7 +24,7 @@
               fill="white" fill-rule="evenodd" />
           </svg>
         </div>
-        <span class="auth-header-title sidebar-logo-text">ChoiceDraft</span>
+        <span class="auth-header-title sidebar-logo-text">Choice<span class="text-secondary">Draft</span></span>
         <button class="close-menu sidebar-close-btn" id="closeMenuBtn" title="Close Menu" aria-label="Close Menu">
           <i class="fa-solid fa-times"></i>
         </button>
@@ -36,7 +38,7 @@
           <p class="user-email" id="userEmail">user@example.com</p>
         </div>
       </div>
-      
+
       <nav class="sidebar-nav">
         <a href="home.html" class="nav-item">
           <div class="nav-icon"><i class="fa-solid fa-chalkboard"></i></div>
@@ -70,7 +72,7 @@
           <button id="menuToggleBtn" class="topbar-icon-btn" title="Toggle Menu" aria-label="Toggle Menu">
             <i class="fa-solid fa-bars"></i>
           </button>
-          <span class="topbar-title">Settings</span>
+          <span class="topbar-title">Settings (Coming Soon)</span>
         </div>
         <div class="flex items-center gap-1">
           <a href="home.html" class="topbar-icon-btn flex items-center justify-center" title="Go to Dashboard"
@@ -84,19 +86,20 @@
       <div class="main-scroll-area fade-in">
         <div class="home-content">
           <div class="test-card settings-card">
-            
+
             <!-- Account Settings -->
             <div class="settings-section">
               <h3 class="settings-section-title">Account Settings</h3>
-              
+
               <div class="setting-item">
                 <div>
                   <span class="setting-text">Change Password</span>
                   <span class="setting-subtext">Update your login credentials securely</span>
                 </div>
-                <button class="btn-secondary settings-chevron-btn" title="View Setting" aria-label="View Setting"><i class="fa-solid fa-chevron-right"></i></button>
+                <button class="btn-secondary settings-chevron-btn" title="View Setting" aria-label="View Setting"><i
+                    class="fa-solid fa-chevron-right"></i></button>
               </div>
-              
+
               <div class="setting-item">
                 <div>
                   <span class="setting-text">Two-Factor Authentication</span>
@@ -112,7 +115,7 @@
             <!-- Notification Preferences -->
             <div class="settings-section">
               <h3 class="settings-section-title">Notifications</h3>
-              
+
               <div class="setting-item">
                 <div>
                   <span class="setting-text">Email Notifications</span>
@@ -123,7 +126,7 @@
                   <span class="toggle-slider"></span>
                 </label>
               </div>
-              
+
               <div class="setting-item">
                 <div>
                   <span class="setting-text">Push Notifications</span>
@@ -135,7 +138,7 @@
                 </label>
               </div>
             </div>
-            
+
             <!-- App Settings -->
             <div class="settings-section last-section">
               <h3 class="settings-section-title">Developer Options</h3>
@@ -156,7 +159,7 @@
 
   <script type="module">
     import { navigateTo } from './app.js';
-    
+
     const sidebar = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
     const menuToggleBtn = document.getElementById('menuToggleBtn');
@@ -209,4 +212,5 @@
     init();
   </script>
 </body>
+
 </html>

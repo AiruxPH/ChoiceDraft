@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,10 +8,11 @@
   <link rel="stylesheet" href="styles.css">
   <script src="https://kit.fontawesome.com/ef9baa832e.js" crossorigin="anonymous"></script>
 </head>
+
 <body class="auth-body">
 
   <div class="auth-layout split-layout">
-    
+
     <!-- Dynamic Header -->
     <header class="auth-header">
       <div id="headerLogo" class="auth-header-logo"></div>
@@ -32,13 +34,15 @@
 
             <div class="input-group">
               <label class="input-label">Email Address</label>
-              <input type="email" id="email" class="input-field" placeholder="you@example.com" required>
+              <input type="email" id="email" class="input-field" placeholder="you@example.com" required
+                autocomplete="email">
             </div>
 
             <div class="input-group">
               <label class="input-label">Password</label>
               <div class="password-input-wrapper">
-                <input type="password" id="password" class="input-field password-input" placeholder="••••••••" required>
+                <input type="password" id="password" class="input-field password-input" placeholder="••••••••" required
+                  autocomplete="current-password">
                 <button type="button" id="togglePwBtn" class="auth-toggle-btn" title="Toggle Password">
                   <i class="fa-solid fa-eye" id="pwIcon"></i>
                 </button>
@@ -75,7 +79,7 @@
 
   <script type="module">
     import { icons, dataService, navigateTo } from './app.js';
-    
+
     document.getElementById('headerLogo').innerHTML = icons.logo;
 
     const form = document.getElementById('signInForm');
@@ -97,13 +101,13 @@
     // Handle Submit
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       errorBox.style.display = 'none';
       submitBtn.disabled = true;
       submitBtn.textContent = 'Signing in...';
 
       const res = await dataService.login(emailInput.value, pwInput.value);
-      
+
       if (res.success) {
         navigateTo('home.html');
       } else {
@@ -116,4 +120,5 @@
 
   </script>
 </body>
+
 </html>
